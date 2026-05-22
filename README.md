@@ -1,13 +1,16 @@
 # 系统运行能力考核验证
 
-最小可运行前后端分离框架：Vue3 + Vite + TypeScript ↔ Java 17 + Spring Boot（无数据库）。
+最小可运行前后端分离框架：Vue3 + Vite + TypeScript ↔ Java 17 + Spring Boot ↔ MySQL（`lab_assess` 表）。
 
 ## 项目结构
 
 ```
-project_git_assess/
+git_assess_GitHub/
+├── .env               # 本地配置（从 .env.example 复制，勿提交）
+├── .env.example       # 环境变量模板
 ├── frontend/          # Vue3 + Vite + TypeScript
 ├── backend/           # Spring Boot + Maven Wrapper
+├── sql/               # 数据库脚本
 └── README.md
 ```
 
@@ -17,11 +20,41 @@ project_git_assess/
 |------|------|
 | 前端 | Node.js 18+、npm |
 | 后端 | JDK 17+（需配置 `JAVA_HOME`） |
+| 数据库 | MySQL 5.7+，已执行 `sql/as_v0.1.1_260522.sql` 建表 |
 | Maven | **不需要**（使用 `mvnw` / `mvnw.cmd`） |
+
+## 环境变量（.env）
+
+所有配置集中在**项目根目录** `.env`，代码与 `application.properties` 中不写死主机、库名、端口等。
+
+```powershell
+# 在项目根目录执行
+copy .env.example .env
+# 编辑 .env，至少填写 DB_HOST、DB_NAME、DB_USERNAME、DB_PASSWORD
+```
+
+| 变量 | 说明 |
+|------|------|
+| `SERVER_PORT` | 后端监听端口 |
+| `FRONTEND_PORT` | 前端 dev 端口 |
+| `BACKEND_HOST` / `BACKEND_PORT` | Vite 代理 `/api` 的目标 |
+| `DB_HOST` / `DB_PORT` / `DB_NAME` | MySQL 连接 |
+| `DB_USERNAME` / `DB_PASSWORD` | 数据库账号 |
+| `DB_TIMEZONE` / `DB_JDBC_PARAMS` | JDBC 参数 |
+| `JPA_SHOW_SQL` | 是否打印 SQL |
+| `CORS_ALLOWED_ORIGIN_PATTERNS` | 逗号分隔的 CORS 来源 |
+| `DOTENV_PATH` | 可选，`.env` 绝对路径 |
+
+1. 在 MySQL 中执行 `sql/as_v0.1.1_260522.sql`（创建 `lab_assess` 表）。
+2. 后端启动前由 `EnvLoader` 加载根目录 `.env`；前端 `vite.config.ts` 同样读取根目录 `.env`。
 
 ## 启动步骤
 
-### 1. 启动后端
+### 1. 配置 .env
+
+见上一节。未配置 `.env` 时前后端启动会报错提示。
+
+### 2. 启动后端
 
 ```powershell
 cd backend
@@ -40,9 +73,9 @@ export JAVA_HOME=/path/to/jdk-17
 ./mvnw spring-boot:run
 ```
 
-启动成功后控制台出现：`Started AssessApplication`，服务监听 `http://localhost:8080`。
+启动成功后控制台出现：`Started AssessApplication`，端口为 `.env` 中的 `SERVER_PORT`。
 
-### 2. 启动前端
+### 3. 启动前端
 
 新开一个终端：
 
@@ -52,7 +85,7 @@ npm install
 npm run dev
 ```
 
-浏览器访问：`http://localhost:5173`
+浏览器访问 `.env` 中 `FRONTEND_PORT` 对应地址（默认 5173）。
 
 ## 联调验证
 
@@ -61,7 +94,8 @@ npm run dev
 1. 先启动后端，再启动前端
 2. 打开 `http://localhost:5173`
 3. 页面自动请求 `/api/health`
-4. 显示绿色 **「联调成功」** 及 `status` / `message` / `service` 即通过
+4. 显示绿色 **「联调成功」**，且 `database` 为 `connected` 表示数据库已连通
+5. 填写「成员考核信息」并点击 **保存到数据库**，下方列表应出现新记录
 
 ### 方式二：直接调后端 API
 
@@ -91,7 +125,9 @@ Invoke-RestMethod http://localhost:5173/api/health
 
 | 方法 | 路径 | 说明 |
 |------|------|------|
-| GET | `/api/health` | 健康检查，用于前后端联调 |
+| GET | `/api/health` | 健康检查（含数据库连通状态） |
+| GET | `/api/assess` | 查询全部考核记录（按 ID 倒序） |
+| POST | `/api/assess` | 新增考核记录，JSON 体字段与前端表单一致 |
 
 ## Maven Wrapper 说明
 
@@ -133,7 +169,10 @@ $env:JAVA_HOME = "D:\Java 21"
 
 确认后端已启动且 `http://localhost:8080/api/health` 可访问。
 
+**`database` 为 `disconnected` 或保存失败**
+
+检查项目根目录 `.env` 中的 `DB_*` 配置，确认 MySQL 允许当前 IP 访问，且 `lab_assess` 表已创建。
+
 **端口占用**
 
-- 后端端口：`backend/src/main/resources/application.properties` 中 `server.port=8080`
-- 前端端口：`frontend/vite.config.ts` 中 `server.port=5173`
+- 端口：修改项目根目录 `.env` 中的 `SERVER_PORT` / `FRONTEND_PORT`

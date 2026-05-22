@@ -1,62 +1,153 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 
-interface HealthResponse {
+interface ApiError {
   status: string
   message: string
-  service: string
 }
 
-const loading = ref(false)
-const error = ref('')
-const data = ref<HealthResponse | null>(null)
+interface AssessForm {
+  name: string
+  assessmentDirection: 0 | 1 | 2
+  frontendResult: 0 | 1 | 2 | 3
+  backendResult: 0 | 1 | 2 | 3
+  dataManagementResult: 0 | 1 | 2 | 3
+  assessmentTime: string
+  assessor: string
+}
 
-async function fetchHealth() {
-  loading.value = true
-  error.value = ''
-  data.value = null
+const DIRECTION_OPTIONS = [
+  { value: 0, label: '前端方向' },
+  { value: 1, label: '后端方向' },
+  { value: 2, label: '管理方向' },
+] as const
+const RESULT_VALUES = [0, 1, 2, 3] as const
+
+function defaultAssessmentTime(): string {
+  const d = new Date()
+  const pad = (n: number) => String(n).padStart(2, '0')
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`
+}
+
+const assessForm = ref<AssessForm>({
+  name: '',
+  assessmentDirection: 0,
+  frontendResult: 0,
+  backendResult: 0,
+  dataManagementResult: 0,
+  assessmentTime: defaultAssessmentTime(),
+  assessor: '',
+})
+
+const submitLoading = ref(false)
+const assessError = ref('')
+const assessSuccess = ref('')
+
+async function submitAssess() {
+  if (!assessForm.value.name.trim()) {
+    assessError.value = '请填写姓名'
+    assessSuccess.value = ''
+    return
+  }
+
+  submitLoading.value = true
+  assessError.value = ''
+  assessSuccess.value = ''
 
   try {
-    const res = await fetch('/api/health')
+    const res = await fetch('/api/assess', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: assessForm.value.name.trim(),
+        assessmentDirection: assessForm.value.assessmentDirection,
+        frontendResult: assessForm.value.frontendResult,
+        backendResult: assessForm.value.backendResult,
+        dataManagementResult: assessForm.value.dataManagementResult,
+        assessmentTime: assessForm.value.assessmentTime,
+        assessor: assessForm.value.assessor.trim() || null,
+      }),
+    })
     if (!res.ok) {
-      throw new Error(`HTTP ${res.status}`)
+      const err = (await res.json().catch(() => null)) as ApiError | null
+      throw new Error(err?.message ?? `HTTP ${res.status}`)
     }
-    data.value = await res.json()
+    assessSuccess.value = '保存成功'
   } catch (e) {
-    error.value = e instanceof Error ? e.message : '请求失败'
+    assessError.value = e instanceof Error ? e.message : '保存失败'
   } finally {
-    loading.value = false
+    submitLoading.value = false
   }
 }
-
-onMounted(() => {
-  fetchHealth()
-})
 </script>
 
 <template>
   <div class="page">
-    <h1>系统运行能力考核验证</h1>
-    <p class="subtitle">Vue3 + Vite + TypeScript ↔ Spring Boot</p>
+    <h1>成员考核信息</h1>
 
-    <button :disabled="loading" @click="fetchHealth">
-      {{ loading ? '请求中...' : '重新检测联调' }}
-    </button>
+    <p v-if="assessError" class="msg error">{{ assessError }}</p>
+    <p v-if="assessSuccess" class="msg success">{{ assessSuccess }}</p>
 
-    <div v-if="error" class="card error">
-      <strong>联调失败</strong>
-      <p>{{ error }}</p>
-      <p class="hint">请确认后端已启动：mvnw.cmd spring-boot:run</p>
-    </div>
+    <form class="assess-form" @submit.prevent="submitAssess">
+      <label class="field">
+        <span class="label">姓名</span>
+        <input v-model="assessForm.name" type="text" maxlength="50" placeholder="被考核人姓名" />
+      </label>
 
-    <div v-else-if="data" class="card success">
-      <strong>联调成功</strong>
-      <ul>
-        <li><span>status</span> {{ data.status }}</li>
-        <li><span>message</span> {{ data.message }}</li>
-        <li><span>service</span> {{ data.service }}</li>
-      </ul>
-    </div>
+      <div class="field">
+        <span class="label">考核方向</span>
+        <div class="radio-group">
+          <label v-for="opt in DIRECTION_OPTIONS" :key="opt.value" class="radio-item">
+            <input v-model.number="assessForm.assessmentDirection" type="radio" :value="opt.value" />
+            <span>{{ opt.label }}</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="field">
+        <span class="label">前端考核结果</span>
+        <div class="radio-group">
+          <label v-for="v in RESULT_VALUES" :key="v" class="radio-item">
+            <input v-model.number="assessForm.frontendResult" type="radio" :value="v" />
+            <span>{{ v }}</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="field">
+        <span class="label">后端考核结果</span>
+        <div class="radio-group">
+          <label v-for="v in RESULT_VALUES" :key="v" class="radio-item">
+            <input v-model.number="assessForm.backendResult" type="radio" :value="v" />
+            <span>{{ v }}</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="field">
+        <span class="label">数据管理考核结果</span>
+        <div class="radio-group">
+          <label v-for="v in RESULT_VALUES" :key="v" class="radio-item">
+            <input v-model.number="assessForm.dataManagementResult" type="radio" :value="v" />
+            <span>{{ v }}</span>
+          </label>
+        </div>
+      </div>
+
+      <label class="field">
+        <span class="label">考核时间</span>
+        <input v-model="assessForm.assessmentTime" type="datetime-local" />
+      </label>
+
+      <label class="field">
+        <span class="label">考核人</span>
+        <input v-model="assessForm.assessor" type="text" maxlength="50" placeholder="填写考核人姓名" />
+      </label>
+
+      <button type="submit" class="submit-btn" :disabled="submitLoading">
+        {{ submitLoading ? '保存中...' : '提交' }}
+      </button>
+    </form>
   </div>
 </template>
 
@@ -69,64 +160,94 @@ onMounted(() => {
 }
 
 h1 {
-  font-size: 1.5rem;
-  margin-bottom: 8px;
-}
-
-.subtitle {
-  color: #666;
+  font-size: 1.25rem;
   margin-bottom: 24px;
 }
 
-button {
+.msg {
+  margin: 0 0 16px;
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+}
+
+.msg.error {
+  color: #b91c1c;
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+}
+
+.msg.success {
+  color: #15803d;
+  background: #f0fdf4;
+  border: 1px solid #86efac;
+}
+
+.assess-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.field .label {
+  font-size: 0.875rem;
+  color: #444;
+}
+
+.field input[type='text'],
+.field input[type='datetime-local'] {
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.9375rem;
+  font-family: inherit;
+}
+
+.field input[type='text']:focus,
+.field input[type='datetime-local']:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgb(59 130 246 / 0.15);
+}
+
+.radio-group {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.radio-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 0.9375rem;
+}
+
+.radio-item input {
+  margin: 0;
+  cursor: pointer;
+}
+
+.submit-btn {
+  align-self: flex-start;
+  margin-top: 4px;
   padding: 8px 16px;
   cursor: pointer;
   border: 1px solid #ccc;
   border-radius: 6px;
   background: #fff;
+  font-size: 0.9375rem;
 }
 
-button:disabled {
+.submit-btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
-}
-
-.card {
-  margin-top: 24px;
-  padding: 16px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-}
-
-.card.success {
-  border-color: #86efac;
-  background: #f0fdf4;
-}
-
-.card.error {
-  border-color: #fca5a5;
-  background: #fef2f2;
-}
-
-ul {
-  list-style: none;
-  padding: 0;
-  margin: 12px 0 0;
-}
-
-li {
-  margin: 6px 0;
-}
-
-li span {
-  display: inline-block;
-  width: 72px;
-  color: #666;
-}
-
-.hint {
-  font-size: 0.875rem;
-  color: #666;
-  margin-top: 8px;
 }
 </style>
