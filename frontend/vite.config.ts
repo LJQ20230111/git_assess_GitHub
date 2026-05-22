@@ -14,12 +14,32 @@ function requireEnv(env: Record<string, string>, key: string): string {
   return value
 }
 
+function resolveBackendTarget(env: Record<string, string>) {
+  const target = (env.BACKEND_TARGET?.trim() || 'local').toLowerCase()
+  if (target !== 'local' && target !== 'remote') {
+    throw new Error(
+      `BACKEND_TARGET 须为 local 或 remote，当前为 "${env.BACKEND_TARGET}"，请在项目根目录 .env 中修改`
+    )
+  }
+
+  const hostKey = target === 'remote' ? 'BACKEND_REMOTE_HOST' : 'BACKEND_LOCAL_HOST'
+  const portKey = target === 'remote' ? 'BACKEND_REMOTE_PORT' : 'BACKEND_LOCAL_PORT'
+
+  return {
+    target,
+    host: requireEnv(env, hostKey),
+    port: requireEnv(env, portKey),
+  }
+}
+
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, envDir, '')
 
-  const backendHost = requireEnv(env, 'BACKEND_HOST')
-  const backendPort = requireEnv(env, 'BACKEND_PORT')
+  const { target, host: backendHost, port: backendPort } = resolveBackendTarget(env)
   const frontendPort = Number(requireEnv(env, 'FRONTEND_PORT'))
+  const proxyTarget = `http://${backendHost}:${backendPort}`
+
+  console.log(`[vite] BACKEND_TARGET=${target} -> ${proxyTarget}`)
 
   return {
     envDir,
@@ -28,7 +48,7 @@ export default defineConfig(({ mode }) => {
       port: frontendPort,
       proxy: {
         '/api': {
-          target: `http://${backendHost}:${backendPort}`,
+          target: proxyTarget,
           changeOrigin: true,
         },
       },

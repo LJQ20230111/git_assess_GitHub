@@ -37,7 +37,9 @@ copy .env.example .env
 |------|------|
 | `SERVER_PORT` | 后端监听端口 |
 | `FRONTEND_PORT` | 前端 dev 端口 |
-| `BACKEND_HOST` / `BACKEND_PORT` | Vite 代理 `/api` 的目标 |
+| `BACKEND_TARGET` | `local`（本机后端）或 `remote`（服务器 Docker 后端） |
+| `BACKEND_LOCAL_HOST` / `BACKEND_LOCAL_PORT` | `BACKEND_TARGET=local` 时 Vite 代理目标 |
+| `BACKEND_REMOTE_HOST` / `BACKEND_REMOTE_PORT` | `BACKEND_TARGET=remote` 时 Vite 代理目标（默认端口 9019） |
 | `DB_HOST` / `DB_PORT` / `DB_NAME` | MySQL 连接 |
 | `DB_USERNAME` / `DB_PASSWORD` | 数据库账号 |
 | `DB_TIMEZONE` / `DB_JDBC_PARAMS` | JDBC 参数 |
@@ -47,6 +49,15 @@ copy .env.example .env
 
 1. 在 MySQL 中执行 `sql/as_v0.1.1_260522.sql`（创建 `lab_assess` 表）。
 2. 后端启动前由 `EnvLoader` 加载根目录 `.env`；前端 `vite.config.ts` 同样读取根目录 `.env`。
+
+### 切换本地 / 远程后端
+
+在 `.env` 中设置 `BACKEND_TARGET`：
+
+- `local`：前端 `/api` 代理到 `BACKEND_LOCAL_HOST:BACKEND_LOCAL_PORT`（默认 `127.0.0.1:8080`），需在本机启动 Spring Boot。
+- `remote`：代理到 `BACKEND_REMOTE_HOST:BACKEND_REMOTE_PORT`（默认端口 `9019`），本机可不启后端；填写服务器 IP 或域名后重启 `npm run dev`。
+
+`npm run dev` 启动时控制台会打印当前代理目标，例如 `[vite] BACKEND_TARGET=remote -> http://x.x.x.x:9019`。
 
 ## 启动步骤
 

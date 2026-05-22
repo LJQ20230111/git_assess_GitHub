@@ -1,0 +1,23 @@
+services:
+  assess-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: assess-backend:1.0.0
+    container_name: assess-backend
+    ports:
+      - "9019:9019"
+    env_file:
+      - .env
+    environment:
+      SERVER_PORT: "9019"
+    volumes:
+      # 可选：用宿主机 .env 覆盖镜像内占位文件
+      - ./.env:/app/.env:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:9019/api/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 45s
