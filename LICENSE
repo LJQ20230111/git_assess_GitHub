@@ -1,0 +1,167 @@
+# 受限使用许可协议
+
+## 1. 协议类型
+本协议为**受限使用许可协议**，仅授权人员可使用本软件。
+
+## 2. 重要声明
+本仓库中的全部代码、文档及其他内容（以下统称为"本软件"）受著作权法及相关法律保护。
+除非取得著作权人事先书面授权，任何非授权人员不得以任何形式使用本软件。
+
+## 3. 著作权与所有权
+
+1. 本软件以及本仓库中所有文件（包括但不限于源代码、配置文件、脚本、文档、设计资料等）的全部著作权及其他相关权利，归本项目团队及/或本仓库的所有者/维护者（以下统称为"著作权人"）所有。
+2. 除非另有书面约定，本仓库中任何文件的存在、存储位置或可访问性均不构成对其权利的转移、让渡或许可。
+3. 本软件不是开源软件，不适用任何开源许可证（如 MIT、GPL、Apache 等）。
+
+## 4. 授权人员范围
+
+1. "授权人员"是指：
+   - 由著作权人通过书面、电子邮件、即时通讯工具或其他可证明方式明确授权的自然人，或
+   - 由著作权人签署书面协议授权的法人或组织的内部指定成员。
+2. 是否属于"授权人员"以著作权人的最终解释和认定为准。
+3. 如本仓库中存在单独的 `AUTHORIZED_USERS`、`AUTHORS` 或类似文件且由著作权人维护，则该文件中列明的对象视为已被授权（除非另有书面说明）。
+
+## 5. 授权范围（仅限授权人员）
+
+在不违反本协议其他条款的前提下，著作权人在此仅向"授权人员"授予下列有限、不可转让、可随时撤销的权利：
+
+1. **运行与使用权**  
+   授权人员可以为内部研究、测试或项目开发目的，在自己控制的设备或服务器上运行、部署和使用本软件。
+
+2. **修改与派生作品权**  
+   授权人员可以为满足自身内部需求而修改本软件、创建派生作品，但：
+   - 修改或派生作品的使用范围不得超出本条所述授权范围；
+   - 未经著作权人书面同意，不得向任何第三方提供修改后的版本或派生作品。
+
+3. **内部传播权（有限）**  
+   授权人员可以在其所在的被授权组织内部，在"知情且已获授权"的前提下，在必要范围内共享本软件及其修改版本。
+
+## 6. 禁止性条款（适用于所有非授权人员及授权人员）
+
+除非事先取得著作权人明确的书面授权，任何主体（包括但不限于非授权人员以及已授权人员）均不得进行下列行为：
+
+1. **不得向任何第三方再授权、转授权或分发本软件**，包括但不限于：
+   - 将本软件全部或部分上传或同步到其他代码托管平台、公开网站或共享盘（除著作权人指定平台外）；
+   - 将本软件或其修改版本提供给未获著作权人授权的个人或组织；
+   - 将本软件嵌入到对外销售或交付给第三方的产品、服务或解决方案中。
+
+2. **不得将本软件用于任何商业或营利性目的**，包括但不限于：
+   - 向第三方收费提供基于本软件的服务；
+   - 将本软件作为商业产品的一部分进行销售、租赁、外包或 SaaS 服务；
+   - 以任何形式直接或间接利用本软件牟利。
+
+3. **不得移除或修改版权标识与声明**  
+   未经著作权人书面许可，不得删除、修改、隐藏或替换本软件中的著作权声明、作者信息、许可条款或其他法律声明。
+
+4. **不得从事任何违法用途**  
+   不得将本软件用于任何违反适用法律法规、公序良俗或第三方合法权益的活动。
+
+## 7. 访问不等于授权
+
+1. 因代码托管平台的公开访问机制，任何人可能在技术上可以访问、浏览或克隆本仓库的内容。
+2. 但访问能力不等同于获得许可。  
+   对非授权人员而言，任何对本软件的下载、运行、修改、使用、编译、分发等行为，均构成对著作权的侵权，著作权人保留依法追究法律责任的权利。
+
+## 8. 协议终止
+
+1. 若授权人员违反本协议中的任何条款，其获得的全部使用权将在无须另行通知的情况下自动终止，著作权人有权要求其立即停止一切使用行为并删除所有本软件副本。
+2. 著作权人有权在任何时间以任何理由单方面收回授权人员的使用许可，但对已遵守本协议且已完成的合法使用不追溯。
+
+## 9. 免责声明
+
+1. 本软件按"现状"提供，不附带任何明示或默示的保证，包括但不限于适销性、特定用途适用性或不侵权的保证。
+2. 在法律允许的最大范围内，著作权人不对因使用或无法使用本软件所产生的任何直接、间接、偶然、特殊或后果性损害承担责任，即便事先已被告知可能发生此类损害。
+
+## 10. 其他条款
+
+1. 本协议未尽事宜，由著作权人解释或另行以书面形式补充。
+2. 如本协议的任何条款被有管辖权的法院认定为无效或不可执行，该条款在必要的最小范围内被限制或删除，其余条款继续完全有效。
+3. 若无特别说明，本协议适用著作权人所在地的现行法律。
+
+## 11. 联系方式
+如需获得使用授权或扩展授权范围，请联系本仓库所有者/维护者。
+
+---
+
+# Restricted Use License Agreement
+
+## 1. Agreement Type
+This is a **Restricted Use License Agreement**, only authorized personnel may use this software.
+
+## 2. Important Notice
+All code, documents and other content in this repository (hereinafter collectively referred to as "the Software") are protected by copyright law and related laws.
+Unless prior written authorization is obtained from the copyright owner, no unauthorized person may use the Software in any form.
+
+## 3. Copyright and Ownership
+
+1. All copyrights and other related rights to the Software and all files in this repository (including but not limited to source code, configuration files, scripts, documents, design materials, etc.) belong to the project team and/or the owner/maintainer of this repository (hereinafter collectively referred to as "the Copyright Owner").
+2. Unless otherwise agreed in writing, the existence, storage location or accessibility of any file in this repository does not constitute a transfer, assignment or license of its rights.
+3. The Software is not open source software and does not apply to any open source licenses (such as MIT, GPL, Apache, etc.).
+
+## 4. Scope of Authorized Personnel
+
+1. "Authorized Personnel" refers to:
+   - Natural persons explicitly authorized by the Copyright Owner through written, email, instant messaging tools or other verifiable means, or
+   - Designated members within legal persons or organizations authorized by the Copyright Owner through written agreements.
+2. Whether someone belongs to "Authorized Personnel" shall be subject to the final interpretation and determination of the Copyright Owner.
+3. If there is a separate `AUTHORIZED_USERS`, `AUTHORS` or similar file in this repository maintained by the Copyright Owner, the objects listed in that file shall be deemed authorized (unless otherwise stated in writing).
+
+## 5. Scope of Authorization (Limited to Authorized Personnel)
+
+Subject to the other terms of this Agreement, the Copyright Owner hereby grants only the "Authorized Personnel" the following limited, non-transferable, and revocable rights:
+
+1. **Right to Run and Use**  
+   Authorized Personnel may run, deploy and use the Software on their own controlled devices or servers for internal research, testing or project development purposes.
+
+2. **Right to Modify and Create Derivative Works**  
+   Authorized Personnel may modify the Software and create derivative works to meet their internal needs, provided that:
+   - The scope of use of modified or derivative works shall not exceed the scope of authorization described in this section;
+   - Without the written consent of the Copyright Owner, modified versions or derivative works shall not be provided to any third party.
+
+3. **Limited Internal Propagation Right**  
+   Authorized Personnel may share the Software and its modified versions within the necessary scope within their authorized organization, on the premise of "informed and authorized".
+
+## 6. Prohibited Clauses (Applicable to All Unauthorized and Authorized Personnel)
+
+Unless prior explicit written authorization is obtained from the Copyright Owner, no subject (including but not limited to unauthorized personnel and authorized personnel) may engage in the following acts:
+
+1. **Shall not re-license, sublicense or distribute the Software to any third party**, including but not limited to:
+   - Uploading or synchronizing all or part of the Software to other code hosting platforms, public websites or shared drives (except for platforms designated by the Copyright Owner);
+   - Providing the Software or its modified versions to individuals or organizations not authorized by the Copyright Owner;
+   - Embedding the Software into products, services or solutions sold or delivered to third parties.
+
+2. **Shall not use the Software for any commercial or profit-making purposes**, including but not limited to:
+   - Charging third parties for services based on the Software;
+   - Selling, leasing, outsourcing or providing SaaS services with the Software as part of commercial products;
+   - Making profits from the Software directly or indirectly in any form.
+
+3. **Shall not remove or modify copyright notices and declarations**  
+   Without the written permission of the Copyright Owner, shall not delete, modify, hide or replace copyright notices, author information, license terms or other legal declarations in the Software.
+
+4. **Shall not engage in any illegal use**  
+   The Software shall not be used for any activities that violate applicable laws and regulations, public order and good customs, or the legitimate rights and interests of third parties.
+
+## 7. Access Does Not Equal Authorization
+
+1. Due to the public access mechanism of code hosting platforms, anyone may technically access, browse or clone the contents of this repository.
+2. However, access capability does not equal obtaining permission.  
+   For unauthorized personnel, any act of downloading, running, modifying, using, compiling, distributing, etc. of the Software constitutes copyright infringement, and the Copyright Owner reserves the right to pursue legal responsibilities according to law.
+
+## 8. Termination of Agreement
+
+1. If Authorized Personnel violate any clause of this Agreement, all their usage rights will automatically terminate without prior notice, and the Copyright Owner has the right to require them to immediately stop all usage activities and delete all copies of the Software.
+2. The Copyright Owner has the right to unilaterally revoke the usage license of Authorized Personnel at any time and for any reason, but will not retroactively against lawful usage that has been completed in compliance with this Agreement.
+
+## 9. Disclaimer
+
+1. The Software is provided "as is" without any express or implied warranties, including but not limited to warranties of merchantability, fitness for a particular purpose or non-infringement.
+2. To the maximum extent permitted by law, the Copyright Owner shall not be liable for any direct, indirect, incidental, special or consequential damages arising from the use or inability to use the Software, even if previously informed of the possibility of such damages.
+
+## 10. Other Terms
+
+1. Matters not covered in this Agreement shall be interpreted by the Copyright Owner or supplemented in writing separately.
+2. If any clause of this Agreement is deemed invalid or unenforceable by a court with jurisdiction, that clause shall be limited or deleted to the minimum extent necessary, and the remaining clauses shall remain fully valid.
+3. Unless otherwise specified, this Agreement shall be governed by the current laws of the Copyright Owner's location.
+
+## 11. Contact Information
+To obtain usage authorization or extend the scope of authorization, please contact the owner/maintainer of this repository.
